@@ -11,7 +11,6 @@ let noDetectionCounter = 0;
 let lastScanTime = 0;
  SCAN_COOLDOWN = 800;
 
-// Price and display information
 const items = {
     'banana': {
         displayName: 'Banana',
@@ -31,12 +30,10 @@ const items = {
 };
 
 function preload() {
-    // Load fonts
     spicyRiceFont = loadFont('SpicyRice-Regular.ttf');
     barlowFont = loadFont('Barlow-Regular.ttf');
     
     soundFormats('mp3');
-    // Replace 'your-sound-file.mp3' with your actual sound file name
     scanSound = loadSound('beep.mp3');
 }
 
@@ -83,7 +80,6 @@ function draw() {
     background(255,225,0);
     drawHeader();
     
-    // Draw vertical divider line
     stroke(0, 166, 81);
     line(width * 0.6, 80, width * 0.6, height - 50);
     
@@ -199,14 +195,12 @@ function drawBillSection() {
     const rightStart = width * 0.65;
     const rightWidth = width * 0.3;
     
-    // Bill title with Spicy Rice font
     textFont(spicyRiceFont);
     textSize(32);
     fill(0, 166, 81);
     textAlign(LEFT, TOP);
     text('Bill Summary', rightStart, 120);
     
-    // Switch to Barlow font for items
     textFont(barlowFont);
     let yPos = 170;
     let total = 0;
@@ -236,7 +230,6 @@ function drawBillSection() {
     }
 }
 
-// Update startCheckout function in sketch.js
 function startCheckout() {
     if (scannedItems.length === 0) {
         alert('Please scan some items first!');
