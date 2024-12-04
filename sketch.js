@@ -22,6 +22,11 @@ const items = {
         displayName: 'Apple',
         price: 1.25,
         dotLine: '.........................'
+    },
+    'lemon': {
+        displayName: 'Lemon',
+        price: 1.99,
+        dotLine: '.........................'
     }
 };
 
@@ -57,10 +62,10 @@ async function startScanning() {
         noDetectionCounter = 0;
         
         webcam = new tmImage.Webcam(640, 480, true);
-        await webcam.setup();
+        await .setup();
         await webcam.play();
 
-        const URL = "https://teachablemachine.withgoogle.com/models/ToDoeIORo/";
+        const URL = "https://teachablemachine.withgoogle.com/models/PQw1Sq1v8/";
         model = await tmImage.load(URL + "model.json", URL + "metadata.json");
         
         isScanning = true;
