@@ -9,7 +9,7 @@ let scannedItems = [];
 let lastScannedItem = null;
 let noDetectionCounter = 0;
 let lastScanTime = 0;
-const SCAN_COOLDOWN = 1000; // 1 second cooldown between scans
+ SCAN_COOLDOWN = 800;
 
 // Price and display information
 const items = {
@@ -25,7 +25,7 @@ const items = {
     },
     'lemon': {
         displayName: 'Lemon',
-        price: 1.99,
+        price: 0.99,
         dotLine: '.........................'
     }
 };
@@ -62,7 +62,7 @@ async function startScanning() {
         noDetectionCounter = 0;
         
         webcam = new tmImage.Webcam(640, 480, true);
-        await .setup();
+        await webcam.setup();
         await webcam.play();
 
         const URL = "https://teachablemachine.withgoogle.com/models/PQw1Sq1v8/";
@@ -173,11 +173,10 @@ function drawTransactionList() {
     
     scannedItems.forEach((item, index) => {
         if (yPos < height - 100) {
-            // Item name
             textAlign(LEFT, TOP);
             text(item.name, 50, yPos);
             
-            // Dotted line
+            // dot???
             let xPos = textWidth(item.name) + 70;
             const remainingWidth = leftSectionWidth - textWidth(item.name) - 120;
             
@@ -187,7 +186,6 @@ function drawTransactionList() {
                 point(xPos + i, yPos + 12);
             }
             
-            // Price
             noStroke();
             textAlign(RIGHT, TOP);
             text('$' + item.price.toFixed(2), leftSectionWidth - 20, yPos);
@@ -238,6 +236,7 @@ function drawBillSection() {
     }
 }
 
+// Update startCheckout function in sketch.js
 function startCheckout() {
     if (scannedItems.length === 0) {
         alert('Please scan some items first!');
@@ -248,9 +247,12 @@ function startCheckout() {
     if (webcam) {
         webcam.stop();
     }
+
+    document.querySelector('.checkout-btn').style.display = 'none';
+    document.querySelector('.start-new-btn').style.display = 'block';
 }
 
-function startNew() {
+async function startNew() {
     scannedItems = [];
     lastScannedItem = null;
     noDetectionCounter = 0;
@@ -265,4 +267,20 @@ function startNew() {
     
     document.querySelector('.start-btn').style.display = 'block';
     document.querySelector('.checkout-btn').style.display = 'none';
+    document.querySelector('.start-new-btn').style.display = 'none';
+    
+    try {
+        webcam = new tmImage.Webcam(640, 480, true);
+        await webcam.setup();
+        await webcam.play();
+
+        const URL = "https://teachablemachine.withgoogle.com/models/PQw1Sq1v8/";
+        model = await tmImage.load(URL + "model.json", URL + "metadata.json");
+        
+        isScanning = true;
+        loop();
+    } catch (error) {
+        console.error('Setup error:', error);
+        alert('Error starting scanner. Please try again.');
+    }
 }
